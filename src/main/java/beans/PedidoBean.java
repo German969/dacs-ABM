@@ -59,7 +59,7 @@ public class PedidoBean {
 	
 	// ---------------- METHODS -------------------- //
 	
-	public String newPedido() {
+	public String newPedido(){
 
 		newPedido = true;
 
