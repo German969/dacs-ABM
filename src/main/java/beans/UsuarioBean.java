@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import dao.RolDao;
 import dao.UsuarioDao;
 import entities.Rol;
 import entities.Usuario;
@@ -55,6 +56,9 @@ public class UsuarioBean {
 	@EJB
 	UsuarioDao dao;
 	
+	@EJB
+	RolDao rdao;
+	
 	public List<Usuario> usuarios;
 	
 	private String filterBy;
@@ -74,7 +78,7 @@ public class UsuarioBean {
 		codigoPostal = new String("");
 		direccion = new String("");
 		
-		rol = dao.getRol(nameRol);
+		rol = rdao.getRol(nameRol);
 
 		Usuario u = new Usuario(name,apellido,cuit,email,user,password,telefono,pais,provincia,localidad,codigoPostal,direccion,rol);
 
@@ -217,7 +221,7 @@ public class UsuarioBean {
 	    		  
 	    		  if(usuario.isNewUser()){
 	    			  
-	    			  rol = dao.getRol(nameRol);
+	    			  rol = rdao.getRol(nameRol);
 	    			  
 	    			  Usuario u = new Usuario(usuario.getNombre(),
 	    					  					usuario.getApellido(),
@@ -256,13 +260,13 @@ public class UsuarioBean {
 	
 	public List<Rol> getRoles(){
 		
-		return dao.getRoles();
+		return rdao.getRoles();
 		
 	}
 	
 	public void update() {
 		
-		usuario.setRol(dao.getRol(nameRol));
+		usuario.setRol(rdao.getRol(nameRol));
 		
 		dao.update(usuario);
 

@@ -6,7 +6,9 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import dao.UsuarioDao;
+import dao.CategoriaDao;
+import dao.ProductoDao;
+import dao.ProveedorDao;
 import entities.Categoria;
 import entities.Pedido;
 import entities.Producto;
@@ -35,7 +37,13 @@ public class ProductoBean {
 	private List<Producto> productos;
 
 	@EJB
-	UsuarioDao dao;
+	ProductoDao pdao;
+	
+	@EJB
+	CategoriaDao cdao;
+	
+	@EJB
+	ProveedorDao pvdao;
 
 	private boolean newProducto;
 
@@ -68,7 +76,7 @@ public class ProductoBean {
 
 		isFiltered = false;
 
-		productos = dao.getProductos();
+		productos = pdao.getProductos();
 
 		return "productos.xhtml";
 	}
@@ -77,11 +85,11 @@ public class ProductoBean {
 
 		if (isFiltered) {
 
-			productos = dao.getProductoByFilter(filter, filterBy);
+			productos = pdao.getProductoByFilter(filter, filterBy);
 
 		} else {
 
-			productos = dao.getProductos();
+			productos = pdao.getProductos();
 
 			if (newProducto) {
 
@@ -159,7 +167,7 @@ public class ProductoBean {
 
 			producto.setCanEdit(false);
 
-			dao.update(producto);
+			pdao.update(producto);
 
 		}
 
@@ -173,13 +181,13 @@ public class ProductoBean {
 
 				if (producto.isNewProducto()) {
 
-					categoria = dao.getCategoria(nameCategoria);
-					proveedor = dao.getProveedor(nameProveedor);
+					categoria = cdao.getCategoria(nameCategoria);
+					proveedor = pvdao.getProveedor(nameProveedor);
 
 					Producto p = new Producto(producto.getNombre(), producto.getMarca(), producto.getDescripcion(),
 							producto.getPrecio(), producto.getComision(), producto.getStock(), categoria, proveedor);
 
-					dao.create(p);
+					pdao.create(p);
 
 					this.getAllProductos();
 
@@ -205,28 +213,28 @@ public class ProductoBean {
 
 	public List<Categoria> getCategorias() {
 
-		return dao.getCategorias();
+		return cdao.getCategorias();
 
 	}
 	
 	public List<Proveedor> getProveedores() {
 
-		return dao.getProveedores();
+		return pvdao.getProveedores();
 
 	}
 
 	public void update() {
 
-		producto.setCategoria(dao.getCategoria(nameCategoria));
+		producto.setCategoria(cdao.getCategoria(nameCategoria));
 
-		producto.setProveedor(dao.getProveedor(nameProveedor));
+		producto.setProveedor(pvdao.getProveedor(nameProveedor));
 
-		dao.update(producto);
+		pdao.update(producto);
 
 	}
 	
 	public void deleteProducto(){
-		dao.delete(producto);
+		pdao.delete(producto);
 	}
 	
 	// ---------------- GETTERS AND SETTERS -------------------- //

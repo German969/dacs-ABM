@@ -9,6 +9,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import dao.MedioDePagoDao;
+import dao.PedidoDao;
 import dao.UsuarioDao;
 import entities.MedioDePago;
 import entities.Pedido;
@@ -34,7 +36,13 @@ public class PedidoBean {
 	private List<Pedido> pedidos;
 	
 	@EJB
-	UsuarioDao dao;
+	PedidoDao pdao;
+	
+	@EJB
+	UsuarioDao udao;
+	
+	@EJB
+	MedioDePagoDao mpdao;
 	
 	private boolean newPedido;
 
@@ -76,7 +84,7 @@ public class PedidoBean {
 
 		isFiltered = false;
 
-		pedidos = dao.getPedidos();
+		pedidos = pdao.getPedidos();
 
 		return "pedidos.xhtml";
 	}
@@ -85,11 +93,11 @@ public class PedidoBean {
 
 		if (isFiltered) {
 
-			pedidos = dao.getPedidoByFilter(filter, filterBy);
+			pedidos = pdao.getPedidoByFilter(filter, filterBy);
 
 		} else {
 
-			pedidos = dao.getPedidos();
+			pedidos = pdao.getPedidos();
 
 			if (newPedido) {
 
@@ -161,7 +169,7 @@ public class PedidoBean {
 			
 			pedido.setCanEdit(false);
 
-			dao.update(pedido);
+			pdao.update(pedido);
 
 		}
 
@@ -189,12 +197,12 @@ public class PedidoBean {
 					
 					pedido.setStringFechaPago(stringFechaPago);
 
-					usuario = dao.getUsuario(nameUsuario);
-					mediodepago = dao.getMediodepago(nameMediodepago);
+					usuario = udao.getUsuario(nameUsuario);
+					mediodepago = mpdao.getMediodepago(nameMediodepago);
 
 					Pedido p = new Pedido(pedido.getFecha(),pedido.getEstado(),usuario,pedido.getFechaPago(),mediodepago);
 
-					dao.create(p);
+					pdao.create(p);
 
 					this.getAllPedidos();
 
@@ -220,21 +228,21 @@ public class PedidoBean {
 	
 	public List<Usuario> getUsuarios() {
 
-		return dao.getUsuarios();
+		return udao.getUsuarios();
 
 	}
 	
 	public List<MedioDePago> getMediosdepago() {
 
-		return dao.getMediosDePago();
+		return mpdao.getMediosDePago();
 
 	}
 
 	public void update() throws ParseException {
 
-		pedido.setUsuario(dao.getUsuario(nameUsuario));
+		pedido.setUsuario(udao.getUsuario(nameUsuario));
 
-		pedido.setMediodepago(dao.getMediodepago(nameMediodepago));
+		pedido.setMediodepago(mpdao.getMediodepago(nameMediodepago));
 		
 		pedido.setStringFecha(stringFecha);
 		
@@ -244,12 +252,12 @@ public class PedidoBean {
 		
 		pedido.setFechaPago(formatter.parse(stringFechaPago));;
 
-		dao.update(pedido);
+		pdao.update(pedido);
 
 	}
 	
 	public void deletePedido(){
-		dao.delete(pedido);
+		pdao.delete(pedido);
 	}
 	
 	public String showFecha(Pedido pedido){
