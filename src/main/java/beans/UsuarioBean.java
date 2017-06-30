@@ -63,7 +63,7 @@ public class UsuarioBean {
 	
 	private String filterBy;
 	
-	public String filter;
+	public String filter=new String("");
 	
 	public boolean isFiltered = false;
 	

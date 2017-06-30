@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import abm.UsuarioFilter;
 import entities.Usuario;
 import entities.Usuario_;
 
@@ -55,6 +56,10 @@ public class UsuarioDao {
 		Root<Usuario> root = query.from(Usuario.class);
 
 		Predicate p;
+		
+		UsuarioFilter uf = new UsuarioFilter();
+		
+		uf.setCod(filterBy);
 
 		switch (filterBy) {
 
@@ -62,13 +67,17 @@ public class UsuarioDao {
 
 			int foo = Integer.parseInt(name);
 
-			p = builder.equal(root.get(Usuario_.id), foo);
+//			p = builder.equal(root.get(Usuario_.id), foo);
+			
+			p = builder.equal(root.get(uf.getAttr(Integer.parseInt(filterBy))), foo);
 
 			break;
 
 		case "2":
+			
+			p = builder.like(root.get(uf.getAttr(filterBy)), "%" + name + "%");
 
-			p = builder.like(root.get(Usuario_.nombre), "%" + name + "%");
+//			p = builder.like(root.get(Usuario_.nombre), "%" + name + "%");
 
 			break;
 
