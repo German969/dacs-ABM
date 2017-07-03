@@ -7,9 +7,6 @@ import entities.Usuario_;
 
 public class UsuarioFilter {
 	
-	private String f1;
-	private int f2;
-	
 	public UsuarioFilter(){
 		
 	}
@@ -26,29 +23,85 @@ public class UsuarioFilter {
 		
 		this.cod = cod;
 		
-		if(cod.equals("1")){
-			f2 = Integer.parseInt(cod);
-		}
-		
 	}
 
-	public SingularAttribute<Usuario,Integer> getAttr(int f2){
+	public SingularAttribute<Usuario,? extends Object> getAttr(){
 		
-		if(f2 == 1){
+		if(cod.equals("1")){
 			
 			return Usuario_.id;
 		
 		}
 		
-		return null;
-		
-	}
-	
-	public SingularAttribute<Usuario,String> getAttr(String f1){
-		
-		if(f1.equals("2")){
+		if(cod.equals("2")){
 			
 			return Usuario_.nombre;
+		
+		}
+		
+		if(cod.equals("3")){
+			
+			return Usuario_.apellido;
+		
+		}
+		
+		if(cod.equals("4")){
+			
+			return Usuario_.cuit;
+		
+		}
+		
+		if(cod.equals("5")){
+			
+			return Usuario_.user;
+		
+		}
+		
+		if(cod.equals("6")){
+			
+			return Usuario_.password;
+		
+		}
+		
+		if(cod.equals("7")){
+			
+			return Usuario_.telefono;
+		
+		}
+		
+		if(cod.equals("8")){
+			
+			return Usuario_.pais;
+		
+		}
+		
+		if(cod.equals("9")){
+			
+			return Usuario_.provincia;
+		
+		}
+		
+		if(cod.equals("10")){
+			
+			return Usuario_.localidad;
+		
+		}
+		
+		if(cod.equals("11")){
+			
+			return Usuario_.codigoPostal;
+		
+		}
+		
+		if(cod.equals("12")){
+			
+			return Usuario_.direccion;
+		
+		}
+		
+		if(cod.equals("13")){
+			
+			return Usuario_.rol;
 		
 		}
 		

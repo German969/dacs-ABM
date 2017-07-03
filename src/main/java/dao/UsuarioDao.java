@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -47,6 +48,7 @@ public class UsuarioDao {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Usuario> getByFilter(String name, String filterBy) {
 
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -61,98 +63,113 @@ public class UsuarioDao {
 		
 		uf.setCod(filterBy);
 
-		switch (filterBy) {
-
-		case "1":
-
-			int foo = Integer.parseInt(name);
-
-//			p = builder.equal(root.get(Usuario_.id), foo);
-			
-			p = builder.equal(root.get(uf.getAttr(Integer.parseInt(filterBy))), foo);
-
-			break;
-
-		case "2":
-			
-			p = builder.like(root.get(uf.getAttr(filterBy)), "%" + name + "%");
-
+////		switch (filterBy) {
+//
+//		case "1":
+////
+////			int foo = Integer.parseInt(name);
+////
+//////			p = builder.equal(root.get(Usuario_.id), foo);
+////			
+////			p = builder.equal(root.get(uf.getAttr(Integer.parseInt(filterBy))), foo);
+////
+////			break;
+//
+//		case "2":
+////			
+////			p = builder.like(root.get(uf.getAttr(filterBy)), "%" + name + "%");
+////
+//////			p = builder.like(root.get(Usuario_.nombre), "%" + name + "%");
+////
+////			break;
+//
+//		case "3":
+//
+//			p = builder.like(root.get(Usuario_.apellido), "%" + name + "%");
+//
+//			break;
+//
+//		case "4":
+//
+//			p = builder.like(root.get(Usuario_.cuit), "%" + name + "%");
+//
+//			break;
+//
+//		case "5":
+//
+//			p = builder.like(root.get(Usuario_.user), "%" + name + "%");
+//
+//			break;
+//
+//		case "6":
+//
+//			p = builder.like(root.get(Usuario_.password), "%" + name + "%");
+//
+//			break;
+//
+//		case "7":
+//
+//			p = builder.like(root.get(Usuario_.telefono), "%" + name + "%");
+//
+//			break;
+//
+//		case "8":
+//
+//			p = builder.like(root.get(Usuario_.pais), "%" + name + "%");
+//
+//			break;
+//
+//		case "9":
+//
+//			p = builder.like(root.get(Usuario_.provincia), "%" + name + "%");
+//
+//			break;
+//
+//		case "10":
+//
+//			p = builder.like(root.get(Usuario_.localidad), "%" + name + "%");
+//
+//			break;
+//
+//		case "11":
+//
+//			p = builder.like(root.get(Usuario_.codigoPostal), "%" + name + "%");
+//
+//			break;
+//
+//		case "12":
+//
+//			p = builder.like(root.get(Usuario_.direccion), "%" + name + "%");
+//
+//			break;
+//
+//		case "13":
+//
+//			p = builder.like(root.get(Usuario_.rol.getName()), "%" + name + "%");
+//
+//			break;
+//
+//		default:
+//
 //			p = builder.like(root.get(Usuario_.nombre), "%" + name + "%");
-
-			break;
-
-		case "3":
-
-			p = builder.like(root.get(Usuario_.apellido), "%" + name + "%");
-
-			break;
-
-		case "4":
-
-			p = builder.like(root.get(Usuario_.cuit), "%" + name + "%");
-
-			break;
-
-		case "5":
-
-			p = builder.like(root.get(Usuario_.user), "%" + name + "%");
-
-			break;
-
-		case "6":
-
-			p = builder.like(root.get(Usuario_.password), "%" + name + "%");
-
-			break;
-
-		case "7":
-
-			p = builder.like(root.get(Usuario_.telefono), "%" + name + "%");
-
-			break;
-
-		case "8":
-
-			p = builder.like(root.get(Usuario_.pais), "%" + name + "%");
-
-			break;
-
-		case "9":
-
-			p = builder.like(root.get(Usuario_.provincia), "%" + name + "%");
-
-			break;
-
-		case "10":
-
-			p = builder.like(root.get(Usuario_.localidad), "%" + name + "%");
-
-			break;
-
-		case "11":
-
-			p = builder.like(root.get(Usuario_.codigoPostal), "%" + name + "%");
-
-			break;
-
-		case "12":
-
-			p = builder.like(root.get(Usuario_.direccion), "%" + name + "%");
-
-			break;
-
-		case "13":
-
-			p = builder.like(root.get(Usuario_.rol.getName()), "%" + name + "%");
-
-			break;
-
-		default:
-
-			p = builder.like(root.get(Usuario_.nombre), "%" + name + "%");
-
-			break;
+//
+//			break;
+//		}
+		
+		if(filterBy.equals(new String("1"))){
+			
+			int foo = Integer.parseInt(name);
+			
+			p = builder.equal(root.get(Usuario_.id), foo);
+			
+		}else{
+			
+			p = builder.like((Expression<String>) root.get(uf.getAttr()), "%" + name + "%");			
+			
 		}
+		
+//		p = builder.equal(root.get(Usuario_.id), Integer.parseInt(name));
+		
 
 		query.where(p);
 
